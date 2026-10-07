@@ -21,6 +21,34 @@ Références :
   outil fournit quelle donnée.
 - [grille-scoring.md](grille-scoring.md) : le Product Score /100.
 
+## Critères impératifs (profil débutant, monoproduit)
+
+Ces critères passent **avant** tout le reste. Un produit qui en rate un seul est écarté, sans
+exception et sans être présenté.
+
+1. **Prix de vente en France : 40 € minimum, 100 € maximum** (environ 43 à 108 $). En dessous, le
+   coût publicitaire mange la marge, même avec des offres en lot.
+2. **Boutique monoproduit** : un produit héros qui porte toute la boutique.
+3. **Résout un problème réel et récurrent**, dérivé de la pyramide de Maslow :
+   - besoins physiologiques : sommeil, douleur, respiration, chaleur et froid, hydratation ;
+   - sécurité : santé du foyer, protection, économies, tranquillité ;
+   - appartenance : animal de compagnie, couple, famille, bébé ;
+   - estime : apparence (peau, cheveux, dents, poils), confiance en soi ;
+   - accomplissement : forme, routine, productivité.
+4. **Pas de tailles** : ni vêtements, ni chaussures, ni lingerie (retours et rétrofacturations).
+5. **Boutique en plein scaling, depuis plusieurs mois** : il faut **montrer la progression mois
+   par mois** (pubs lancées par mois via `get_brand_ads_aggregates` avec `from_date`/`to_date`,
+   série `get_market history=true`) et la croissance actuelle (pubs 7 j et 30 j, trafic 1 mois).
+   La tendance doit monter. Une boutique qui démarre ou qui plafonne ne compte pas.
+6. **Volume de pubs** : des centaines à des milliers de pubs actives chez le vendeur de référence.
+7. **Concurrence française nommée** : au moins 1 à 2 boutiques françaises actives, **chacune citée
+   avec son lien, ses pubs actives et sa tendance**. Ne jamais écrire « il y a 5 concurrents » sans
+   les lister.
+8. **Produits refusés** : ne jamais reproposer un produit listé dans `suivi/produits-refuses.md`.
+
+L'avantage recherché est un **angle de vente que personne n'utilise**, sur un produit déjà validé
+par le marché.
+
 ## Sources de données
 
 | Source | Usage |
