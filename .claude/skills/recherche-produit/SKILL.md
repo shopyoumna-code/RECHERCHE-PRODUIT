@@ -89,7 +89,8 @@ Astuces :
 ### 3. Signaux boutique (pour chaque vendeur sérieux)
 
 Pour chaque boutique trouvée, appelle `get_brand` avec les champs de croissance (liste dans
-[signaux.md](signaux.md)), puis collecte sur **7 j, 30 j et 90 j** (voir [signaux.md](signaux.md)) :
+[signaux.md](signaux.md)), puis collecte les évolutions sur les **périodes disponibles et pertinentes** (court, moyen et
+long terme ; voir [signaux.md](signaux.md)) :
 pubs actives et leur évolution, nouvelles pubs, duplications, trafic et son évolution, revenu
 estimé et son évolution, ancienneté de la boutique, du produit et des pubs.
 
@@ -101,7 +102,7 @@ Signal de scaling fort = **pubs actives ↑ + trafic ↑ + nouvelles créatives 
 
 ### 4. Momentum
 
-Calcule `AD GROWTH` et `TRAFFIC GROWTH` sur 7 j, 30 j et 90 j, puis classe chaque boutique
+Calcule `AD GROWTH` et `TRAFFIC GROWTH` sur les périodes disponibles, puis classe chaque boutique
 **ACCELERATING > GROWING > STABLE > DECLINING** selon les règles de [signaux.md](signaux.md).
 
 ### 5. Validation produit (multi-boutiques)
@@ -186,7 +187,7 @@ N'invente jamais une URL.
    dominant, nb de boutiques (scalent / stables / déclin / arrêt), marchés Big Four validés,
    ancienneté, concurrents FR.
 3. **Fiche par finaliste** :
-   - signaux boutique (tableau 7 j / 30 j / 90 j par vendeur, avec étiquettes de confiance) ;
+   - signaux boutique (tableau des évolutions par période et par vendeur, avec étiquettes de confiance) ;
    - momentum et classement ;
    - validation multi-boutiques ;
    - tableau Big Four ;

@@ -19,7 +19,8 @@ Règles :
 - **Aucun signal isolé ne suffit.** Tu cherches des anomalies positives et tu retiens le
   candidat qui cumule le plus de signaux indépendants. Le succès d'une seule boutique ne valide
   rien ; le nombre de pubs seul ne prouve pas un scaling.
-- Compare toujours 7 j, 30 j et 90 j quand la donnée existe.
+- Compare toujours au moins un horizon court et un horizon long. Les périodes (7 j, 1 mois,
+  3 mois, 6 mois, 1 an…) s'adaptent aux données disponibles : 7/30/90 j n'est pas une obligation.
 - Étiquette chaque chiffre : OBSERVED, ESTIMATED, INFERRED ou UNKNOWN. Ne transforme jamais
   une estimation en certitude. Ne pénalise jamais automatiquement un UNKNOWN : retire-le du
   calcul et affiche la couverture.

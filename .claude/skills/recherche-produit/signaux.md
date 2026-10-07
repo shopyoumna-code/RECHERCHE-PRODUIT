@@ -5,20 +5,25 @@ compte que s'il est confirmé par d'autres signaux indépendants.
 
 ## 1. Signaux boutique
 
-À collecter pour chaque boutique, sur **7 j, 30 j et 90 j** quand c'est possible.
+À collecter pour chaque boutique sur **plusieurs périodes**.
+
+**Les périodes ne sont pas figées.** 7 j / 30 j / 90 j est un point de départ, pas une
+obligation : adapte-les aux données disponibles (3 j, 7 j, 1 mois, 3 mois, 6 mois, 1 an,
+2 ans…) et à la question posée. La règle est seulement de toujours comparer **au moins un
+horizon court et un horizon long**, pour distinguer un pic d'une tendance.
 
 | Signal | Outil BrandSearch | Confiance |
 |---|---|---|
 | Pubs actives actuelles | `get_brand` → `last_meta_active_count` ; par produit : `ads.active` (`get_market`) | OBSERVED |
-| Croissance des pubs actives 3 j / 7 j / 30 j | `get_brand` (avec `fields`, voir plus bas) → `active_growth_percentage_3d`, `active_growth_percentage_7d`, `active_growth_percentage` (30 j) | OBSERVED (calcul BrandSearch) |
+| Croissance des pubs actives 3 j / 7 j / 1 mois | `get_brand` (avec `fields`, voir plus bas) → `active_growth_percentage_3d`, `active_growth_percentage_7d`, `active_growth_percentage` (30 j) | OBSERVED (calcul BrandSearch) |
 | Pubs actives à J-90 | `suivi/snapshots.csv` si présent ; sinon `search_meta_ads` `brand_ids=<domaine>`, `ad_started_to=<J-90>`, `status=active` (borne basse : pubs lancées avant J-90 et encore actives) | OBSERVED (snapshot) / INFERRED |
 | Croissance du total de pubs / pubs coupées | `total_growth_percentage`, `inactive_growth_percentage` | OBSERVED (calcul BrandSearch) |
 | Nouvelles pubs sur 7 / 30 / 90 j | `get_brand_ads_aggregates` avec `from_date`/`to_date` → `window.ad_count` ; compare avec la période précédente de même durée | OBSERVED |
 | Duplications | `search_meta_ads` `brand_ids=<domaine>` `sort_by=duration` → `duplicate_count` des pubs ; `duplicate_count_min` pour filtrer | OBSERVED |
 | Dépense pub 3 / 7 / 30 / 60 j | `spend_3d`, `spend_7d`, `spend_30d`, `spend_60d` ; tendance 30 j = `spend_30d` ÷ (`spend_60d` − `spend_30d`) − 1 (UE/UK uniquement) | ESTIMATED |
 | Trafic actuel | `get_brand` → `monthly_visits` | ESTIMATED |
-| Croissance 30 j BrandSearch | `growth_30d` (en %, définition non documentée, probablement le trafic) ; valeurs > 1 000 % = base quasi nulle, à ne pas interpréter seule | ESTIMATED |
-| Évolution du trafic 90 j | `suivi/snapshots.csv` ; sinon UNKNOWN | ESTIMATED / UNKNOWN |
+| Croissance du trafic 1 mois | `growth_30d` (en %, correspond au filtre « Croissance trafic » période 1M de l'interface BrandSearch) ; valeurs > 1 000 % = base quasi nulle, à ne pas interpréter seule | ESTIMATED |
+| Croissance du trafic 3 mois / 6 mois | Visible dans l'interface web BrandSearch (filtre « Croissance trafic », périodes 3M et 6M) mais **non exposée par le connecteur** : demande la valeur à l'utilisateur, ou utilise `suivi/snapshots.csv` ; sinon UNKNOWN | ESTIMATED / UNKNOWN |
 | Revenu estimé | `revenue` des cartes produit, `min_revenue`/`max_revenue` des marques | ESTIMATED |
 | Évolution du revenu | `suivi/snapshots.csv` ; sinon UNKNOWN | ESTIMATED / UNKNOWN |
 | Dépense pub du marché produit (série quotidienne) | `get_market` `history=true` → `advertisers`, `est_daily_spend_usd` (données UE/UK) | ESTIMATED |
@@ -84,16 +89,18 @@ Ne jamais utiliser uniquement le nombre de pubs comme preuve de scaling.
 ## 3. Momentum
 
 ```
-AD GROWTH 7D / 30D / 90D      = (pubs actives actuelles − pubs actives J-x) / pubs actives J-x
-TRAFFIC GROWTH 7D / 30D / 90D = (trafic actuel − trafic J-x) / trafic J-x
+AD GROWTH (période)      = (pubs actives actuelles − pubs actives début de période) / pubs actives début de période
+TRAFFIC GROWTH (période) = (trafic actuel − trafic début de période) / trafic début de période
 ```
 
 Sources :
 - AD GROWTH 7D et 30D : directement `active_growth_percentage_7d` et `active_growth_percentage`.
-- AD GROWTH 90D : snapshot J-90, sinon reconstitution via `search_meta_ads` (INFERRED).
+- AD GROWTH sur une période plus longue (3 mois, 6 mois…) : snapshot, sinon reconstitution via
+  `search_meta_ads` (`ad_started_to` = début de période, `status=active`) (INFERRED).
 - TRAFFIC GROWTH 30D : `growth_30d` (ESTIMATED) ; recoupe avec la tendance de dépense
   `spend_30d` vs `spend_60d` quand elle existe.
-- TRAFFIC GROWTH 7D et 90D : snapshots, sinon UNKNOWN.
+- TRAFFIC GROWTH 3M et 6M : interface BrandSearch (valeur fournie par l'utilisateur) ou
+  snapshots, sinon UNKNOWN.
 
 Si la valeur J-x vaut 0 ou est UNKNOWN, n'invente pas de pourcentage : écris « n/a » et appuie-toi
 sur les nouvelles pubs par période et la série `get_market`.
@@ -106,6 +113,11 @@ sur les nouvelles pubs par période et la série `get_market`.
 | **GROWING** | AD GROWTH 30D entre +5 % et +20 %, ou ≥ +20 % sans accélération ; trafic stable ou en hausse |
 | **STABLE** | AD GROWTH 30D entre −5 % et +5 % et pubs toujours actives |
 | **DECLINING** | AD GROWTH 30D < −5 %, ou trafic en baisse nette, ou plus aucune pub active |
+
+Ces règles prennent 30 j comme horizon de référence et 7 j comme horizon court, parce que ce sont
+les valeurs directement fournies. Si tu disposes d'horizons plus longs (3 ou 6 mois de trafic,
+snapshots), applique la même logique : **accélération = horizon court plus rapide que
+l'horizon long**.
 
 Si pubs et trafic divergent (pubs ↑, trafic ↓), prends la classe la plus basse des deux et
 signale la divergence. Le classement est toujours **INFERRED**.

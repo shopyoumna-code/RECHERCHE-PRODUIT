@@ -14,7 +14,7 @@ L'agent tourne dans Claude Code et s'appuie sur :
 - **Shopify** : noms de marque, domaines, aperçus de boutique ;
 - **la recherche web** : fournisseurs, ancienneté des domaines, concurrents français.
 
-Étapes : **découvrir (Big Four) → filtrer → signaux boutique 7/30/90 j → momentum →
+Étapes : **découvrir (Big Four) → filtrer → signaux boutique sur plusieurs périodes → momentum →
 validation multi-boutiques → longévité et Big Four → France → score /100**.
 
 | Bloc | Poids |
@@ -44,7 +44,7 @@ Valide ce produit avant que je le lance en France : https://exemple.com/products
 ```
 
 Les rapports sont écrits dans `rapports/`. Chaque recherche ajoute des mesures dans
-`suivi/snapshots.csv` : plus on relance de recherches, plus les évolutions 7/30/90 j sont
+`suivi/snapshots.csv` : plus on relance de recherches, plus les évolutions sur longue période sont
 observées plutôt que déduites.
 
 ## Structure
