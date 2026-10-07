@@ -17,6 +17,9 @@ Règles :
 - Chaque affirmation chiffrée cite sa source (outil + valeur). Pas de donnée, pas de points.
 - Économise les crédits BrandSearch : petites pages (10 résultats au maximum), puis
   approfondissement sur 10 à 15 candidats seulement.
+- **Chaque boutique, produit ou pub cité doit avoir son lien cliquable** (site, fiche produit,
+  Bibliothèque publicitaire Meta). L'utilisateur doit pouvoir cliquer et arriver directement
+  sur la page. Aucune exception, y compris dans le résumé final.
 - Sois sévère. Mieux vaut 3 produits solides que 10 produits moyens.
 - Ne crée jamais de produit ni de boutique sur Shopify : propose-le seulement.
 - Termine toujours par le chemin du rapport écrit dans `rapports/` et le top 3.

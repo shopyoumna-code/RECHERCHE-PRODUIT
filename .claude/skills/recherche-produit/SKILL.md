@@ -89,6 +89,24 @@ justifié par un chiffre issu d'un outil.** Si une donnée manque, attribue 0 à
 
 ## Livrable
 
+### Règle obligatoire : des liens cliquables partout
+
+L'utilisateur ne doit **jamais** avoir à chercher lui-même une boutique ou une pub. Chaque fois
+qu'une boutique, un produit ou une pub est cité (dans le rapport **et** dans le résumé de chat) :
+- **Boutique** : lien vers le site, `[nom](https://domaine.com)`.
+- **Produit** : lien direct vers la fiche produit (champ `url` renvoyé par BrandSearch), pas
+  seulement vers la page d'accueil.
+- **Pub Meta** : lien vers la Bibliothèque publicitaire Meta, accessible sans compte :
+  `https://www.facebook.com/ads/library/?id=<id de la pub>`.
+- **Fournisseur** : lien vers l'annonce (AliExpress, CJ, 1688…).
+- Le lien BrandSearch (`dashboard_url`) peut être ajouté en complément, jamais à la place : il
+  demande un compte.
+
+Si tu n'as pas l'URL exacte d'une fiche produit, mets le lien de la boutique et écris
+« fiche produit à retrouver » : n'invente jamais une URL.
+
+### Contenu du rapport
+
 Écris le rapport dans `rapports/AAAA-MM-JJ-<sujet>.md` avec :
 
 1. **Résumé** : les 3 meilleurs produits en une ligne chacun.

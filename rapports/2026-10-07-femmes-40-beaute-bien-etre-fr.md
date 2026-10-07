@@ -9,6 +9,28 @@ Exclus d'office : compléments alimentaires, maquillage, produits complexes pour
 2. **Brosse de drainage du visage, en kit visage + corps : 80/100 🟢.** Les pubs ont touché 17,8 millions de personnes en France et en Belgique. Le produit coûte très peu.
 3. **Appareil de drainage pour jambes lourdes : 68/100 🟡.** L'audience est exactement la cible (92 % de femmes, 35-44 ans, France), mais le marché démarre à peine.
 
+## Liens (boutiques, produits, pubs)
+
+Les liens « Pub » ouvrent la Bibliothèque publicitaire Meta, accessible sans compte.
+
+| # | Boutique | Fiche produit | Pub la plus forte |
+|---|---|---|---|
+| 1 | [Elen Loré](https://elenlore.com) | [Masque de Nuit Cloud-Contour, 49 €](https://elenlore.com/products/masque-de-sommeil-profond-en-soie-premium) · [Taie en soie, 59 €](https://elenlore.com/products/taie-doreiller-en-soie-premium) | [1,1 M de personnes touchées](https://www.facebook.com/ads/library/?id=1523348676236340) · [« Après 40 ans »](https://www.facebook.com/ads/library/?id=1662216991567504) |
+| 1 bis | [L'atelier de la soie](https://atelier-de-la-soie.com) | [Taie en soie, 54,90 €](https://atelier-de-la-soie.com/products/taie-doreiller-100-pure-soie-de-murier) | — |
+| 2 | [Aera](https://aeramethod.com) | [Brosse drainante visage, 34,90 €](https://aeramethod.com/products/brosse-drainante-aera%E2%84%A2) · [Brosse corps, 24,90 €](https://aeramethod.com/products/brosse-de-drainage-pour-le-corps) | [563 k de personnes touchées](https://www.facebook.com/ads/library/?id=1350550659745487) |
+| 3 | [Allevia Paris](https://alleviaparis.com) | [Allevia Lift, 69 €](https://alleviaparis.com/products/allevia-lift) | [« Je pensais que c'était juste l'âge »](https://www.facebook.com/ads/library/?id=1700452824507054) |
+| 3 bis | [Luveon](https://luveon-us.com) | [Leggings, 36,95 $](https://luveon-us.com/products/luveon-leggings) | [2 M de personnes touchées](https://www.facebook.com/ads/library/?id=1359843296263092) |
+| 4 | [Cervizen](https://cervizen.fr) | fiche produit de l'oreiller à retrouver sur le site | [1,9 M de personnes touchées](https://www.facebook.com/ads/library/?id=1007717678893347) |
+| 4 bis | [Callixe](https://callixe.com) | [Thera Pillow, 105,95 $](https://callixe.com/products/thera) | — |
+| 4 ter | [Ydeko](https://ydeko.com) | [Oreiller cervical, 49 €](https://ydeko.com/products/oreiller-orthopedique-coussin-ergonomique-memoire-forme-arthrose-coussin-cervical) | [122 k de personnes touchées](https://www.facebook.com/ads/library/?id=2120600378797106) |
+| 5 | [Nooance Paris](https://nooance-paris.com) | fiche produit à retrouver sur le site | [1 M de personnes touchées](https://www.facebook.com/ads/library/?id=1749720602743195) |
+| 5 bis | [SKIN RB](https://skinrb.com) | [Masque LED, 83 € en promo](https://skinrb.com/products/masque-led-creme-retinol-offerte) | [Pub -50 %](https://www.facebook.com/ads/library/?id=1368980091568424) |
+| 5 ter | [Silk'n France](https://shop.silkn.fr) | [LED Face Mask 100, 109,99 €](https://shop.silkn.fr/products/boulanger_led_face_mask_100) | — |
+
+**Produits écartés** : [Lyphéa](https://lyphea.com/products/gouttes-de-bien-etre-pour-le-drainage-lymphatique) ·
+[The Grace Studio](https://thegracestudio.fr/products/the-grace-halo-ondule-naturel) ·
+[Santellia](https://santellia.com) · [Lamier](https://lelamier.com/products/lamier) · [TYMO](https://tymobeauty.com)
+
 ## Tableau
 
 | # | Produit | Score | Prix de vente | Coût estimé* | Ratio | Preuve principale | Verdict |
