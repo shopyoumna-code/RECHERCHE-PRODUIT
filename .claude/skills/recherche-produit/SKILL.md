@@ -44,7 +44,7 @@ Chaque chiffre du rapport porte une étiquette :
 | **OBSERVED** | Donnée directement disponible | pubs actives, date de début d'une pub, prix, nombre de vendeurs |
 | **ESTIMATED** | Estimation de l'outil | trafic mensuel, revenu, dépense publicitaire |
 | **INFERRED** | Déduite de plusieurs données | pubs actives à J-30, statut ACCELERATING, ancienneté de la boutique |
-| **UNKNOWN** | Indisponible | évolution du trafic sans snapshot antérieur |
+| **UNKNOWN** | Indisponible | trafic à J-90 sans snapshot antérieur, dépense pub hors UE/UK |
 
 - Ne transforme **jamais** une estimation en certitude : écris « ~28 k visites/mois (ESTIMATED) ».
 - Ne pénalise **jamais** automatiquement un UNKNOWN : voir la règle de calcul dans
@@ -64,8 +64,10 @@ Lance plusieurs angles en parallèle, puis fusionne les doublons par `market.id`
 - `search_meta_ads` avec `country_code` = `US`, `GB`, `CA` ou `AU`, `status=active`,
   `sort_by=duration`, `duplicate_count_min=3`, `max_ads_per_brand=1` : pubs anciennes **et**
   dupliquées, donc rentables.
-- `discover_brands` / `query_brands` avec `country_code` du Big Four et `status=active` pour
-  repérer des boutiques en croissance.
+- `search_brands` avec `country_code` du Big Four, `status=active`, `meta_active_min=10`,
+  `created_to` = il y a 6 mois (boutiques installées) et `sort_by=active_growth_percentage`
+  (puis `growth_30d`) : boutiques établies dont les pubs accélèrent. Demande les champs de
+  croissance avec `fields` (voir [signaux.md](signaux.md)).
 
 Les valeurs de `niche` viennent de `get_facet("product-niches")`. Ne les invente pas.
 
@@ -86,7 +88,8 @@ Astuces :
 
 ### 3. Signaux boutique (pour chaque vendeur sérieux)
 
-Pour chaque boutique trouvée, collecte sur **7 j, 30 j et 90 j** (voir [signaux.md](signaux.md)) :
+Pour chaque boutique trouvée, appelle `get_brand` avec les champs de croissance (liste dans
+[signaux.md](signaux.md)), puis collecte sur **7 j, 30 j et 90 j** (voir [signaux.md](signaux.md)) :
 pubs actives et leur évolution, nouvelles pubs, duplications, trafic et son évolution, revenu
 estimé et son évolution, ancienneté de la boutique, du produit et des pubs.
 
@@ -148,12 +151,12 @@ Applique [grille-scoring.md](grille-scoring.md). Chaque point est justifié par 
 
 ## Suivi dans le temps : `suivi/snapshots.csv`
 
-BrandSearch donne surtout des valeurs **actuelles**. Pour obtenir de vraies évolutions 7/30/90 j,
-ajoute une ligne par boutique analysée à chaque recherche (ne réécris jamais les lignes
+BrandSearch calcule lui-même la croissance des pubs sur 3, 7 et 30 j et une croissance 30 j
+(`growth_30d`), mais pas l'historique à 90 j. Pour le construire, ajoute une ligne par boutique analysée à chaque recherche (ne réécris jamais les lignes
 existantes) :
 
 ```
-date,brand_id,pays,produit_market_id,pubs_actives,pubs_total,visites_mensuelles,revenu_min_usd,revenu_max_usd,source
+date,brand_id,pays,produit_market_id,pubs_actives,pubs_total,visites_mensuelles,growth_30d,active_growth_7d,active_growth_30d,spend_30d,revenu_min,revenu_max,source
 ```
 
 Avant de calculer un momentum, relis ce fichier : une valeur J-30 issue d'un snapshot est

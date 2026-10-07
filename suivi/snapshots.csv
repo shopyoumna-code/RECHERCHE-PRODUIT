@@ -1,1 +1,1 @@
-date,brand_id,pays,produit_market_id,pubs_actives,pubs_total,visites_mensuelles,revenu_min_usd,revenu_max_usd,source
+date,brand_id,pays,produit_market_id,pubs_actives,pubs_total,visites_mensuelles,growth_30d,active_growth_7d,active_growth_30d,spend_30d,revenu_min,revenu_max,source
