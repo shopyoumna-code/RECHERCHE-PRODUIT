@@ -49,11 +49,13 @@ Les seuils de lecture des signaux sont dans [signaux.md](signaux.md).
 
 | Critère | Points |
 |---|---|
-| Concurrents DTC français actifs : 1–5 → 7 · 6–10 → 4 · 0 → 3 · 11+ → 1 | 7 |
-| Preuves commerciales en France (au moins un vendeur FR avec pubs actives depuis 30+ j ou dépense UE réelle) → 5 · indices faibles → 2 · aucune → 0 | 5 |
+| Concurrents français actifs (boutiques avec pubs actives en français) : 3–10 → 7 · 2 → 5 · 11–20 → 4 · 1 → 2 · 21+ → 2 · 0 → 0 | 7 |
+| Preuves commerciales en France (au moins un vendeur FR avec pubs actives depuis 30+ j, dépense UE réelle ou trafic en hausse) → 5 · indices faibles → 2 · aucune → 0 | 5 |
 | Concurrents FR en dessous du Big Four (moins de pubs, angles moins travaillés, prix plus hauts) → 3 | 3 |
 
-« 0 concurrent » ne rapporte que 3 points sur 7 : l'absence n'est pas une preuve.
+La concurrence française est **recherchée** : elle prouve que le produit se vend en France.
+Un produit sans aucun concurrent français actif est plafonné à **À SURVEILLER** (voir
+garde-fous), quel que soit son score.
 
 ## 6. Marge / logistique : 5 points
 
@@ -88,5 +90,8 @@ Couverture = points évaluables ÷ 100
 Garde-fous :
 - Un produit éliminé à l'étape 2 (filtres éliminatoires) est NON PRIORITAIRE quel que soit son score.
 - Un produit vendu par **une seule boutique** ne peut pas dépasser À SURVEILLER.
+- Un produit **sans concurrent français actif** ne peut pas dépasser À SURVEILLER.
+- Un produit qui ne **résout pas un problème identifiable** (douleur, gêne, perte de temps,
+  insécurité, complexe) est NON PRIORITAIRE : la marque doit vendre une solution, pas un gadget.
 - Aucun verdict au-dessus de À SURVEILLER sans **au moins 4 signaux positifs indépendants**
   (par exemple : longévité, plusieurs vendeurs, momentum, plusieurs marchés du Big Four).

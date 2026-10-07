@@ -139,11 +139,15 @@ Une fois le produit validé dans le Big Four, cherche-le en France et mesure **e
 mêmes signaux** : concurrents DTC (`country_code=FR`, `market_country=FR`, `languages=fr`),
 pubs actives, croissance des pubs, trafic, croissance du trafic, ancienneté, longévité, prix.
 
-**Opportunité idéale** : Big Four = forte validation, France = faible concurrence, France =
-quelques preuves commerciales existantes, produit evergreen.
+**Opportunité idéale** : Big Four = forte validation, France = concurrence réelle mais moins
+mature que le Big Four (moins de pubs, angles moins travaillés), France = preuves commerciales
+existantes, produit evergreen qui **résout un problème**.
 
-« Aucun concurrent français » n'est **jamais** une preuve positive : cela peut signifier que le
-produit ne prend pas en France. Cherche alors pourquoi (prix, culture, réglementation).
+**La concurrence française est une condition, pas un frein.** On veut des produits déjà vendus
+en France par plusieurs boutiques actives : c'est la preuve que le marché français achète.
+« Aucun concurrent français » n'est **jamais** une preuve positive : le produit est alors
+plafonné à À SURVEILLER. L'avantage recherché est d'être **meilleur** que les concurrents
+français (angle, offre, marque, créas), pas d'être seul.
 
 ### 8. Noter sur 100
 
