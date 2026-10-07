@@ -1,48 +1,92 @@
-# Grille de scoring (/100)
+# Product Score /100
 
-## 1. Pubs qui scalent : 30 points
+| Bloc | Points |
+|---|---|
+| Evergreen / longévité | 20 |
+| Momentum commercial | 25 |
+| Validation multi-boutiques | 20 |
+| Validation Big Four | 15 |
+| Opportunité France | 15 |
+| Marge / logistique | 5 |
+
+Les seuils de lecture des signaux sont dans [signaux.md](signaux.md).
+
+## 1. Evergreen / longévité : 20 points
 
 | Critère | Points |
 |---|---|
-| Pubs actives (`active_ads`) : ≥ 20 → 10 · 5–19 → 6 · 1–4 → 2 | 10 |
-| Pubs lancées ces 30 j (`ads_30d`) : ≥ 10 → 10 · 3–9 → 6 · 1–2 → 2 | 10 |
-| Plus vieille pub encore active : ≥ 60 j → 10 · 30–59 j → 6 · 14–29 j → 3 | 10 |
+| Ancienneté de la preuve commerciale encore vivante : 24+ mois → 12 · 12–24 → 10 · 6–12 → 7 · 3–6 → 4 · < 3 → 1 | 12 |
+| Survie : part des vendeurs encore actifs parmi ceux ayant annoncé il y a 6+ mois : ≥ 60 % → 5 · 30–60 % → 3 · < 30 % → 0 | 5 |
+| Pas de pic court (série `get_market` régulière ou croissante, pas en cloche) → 3 | 3 |
 
-Une pub qui tourne depuis longtemps est rentable. Beaucoup de nouvelles variantes signifient
-que l'annonceur augmente son budget.
-
-## 2. Concurrents rentables : 25 points
+## 2. Momentum commercial : 25 points
 
 | Critère | Points |
 |---|---|
-| Nombre de vendeurs (`sellers`) : 3–15 → 10 · 16–30 → 6 · 2 → 4 · 31–50 → 2 · 1 → 2 | 10 |
-| Revenu mensuel estimé du marché : ≥ 50 k$ → 10 · 10–50 k$ → 6 · < 10 k$ → 2 | 10 |
-| Au moins un vendeur « petite boutique » (< 20 produits) qui marche → 5 | 5 |
+| Classe du meilleur vendeur indépendant : ACCELERATING → 8 · GROWING → 6 · STABLE → 3 · DECLINING → 0 | 8 |
+| Nouvelles créatives 30 j (meilleurs vendeurs) en hausse vs période précédente → 5 · stables → 2 · en baisse → 0 | 5 |
+| Duplications : pubs dupliquées (≥ 3 copies) parmi les plus anciennes actives → 4 · quelques-unes → 2 · aucune → 0 | 4 |
+| Trafic du meilleur vendeur : en hausse → 4 · stable → 2 · en baisse → 0 | 4 |
+| Niveau de pubs actives sur le produit (tous vendeurs) : 50+ et en croissance → 4 · 30–50 → 3 · 10–30 → 2 · < 10 → 0 | 4 |
 
-Le bon créneau : la demande est prouvée par plusieurs vendeurs, mais le marché n'est pas
-saturé. Une petite boutique qui marche montre qu'un nouvel entrant peut réussir.
-
-## 3. Tendance et demande : 20 points
-
-| Critère | Points |
-|---|---|
-| Première pub (`first_advertised`) : < 3 mois → 8 · 3–6 mois → 5 · 6–12 mois → 3 · > 12 mois → 1 | 8 |
-| Présence TikTok Shop ou pubs TikTok virales → 6 | 6 |
-| Tendance de recherche en hausse ou stable (WebSearch / Google Trends) → 6 · baisse → 0 | 6 |
-
-## 4. Marge et logistique : 25 points
+## 3. Validation multi-boutiques : 20 points
 
 | Critère | Points |
 |---|---|
-| Ratio prix de vente / coût rendu (produit + livraison) : ≥ 3 → 12 · 2,5–3 → 8 · 2–2,5 → 4 · < 2 → 0 | 12 |
-| Prix de vente 25–80 $ → 5 · 20–25 ou 80–90 $ → 3 · autre → 0 | 5 |
-| Fournisseur trouvé avec livraison ≤ 10 j vers le marché cible (ou `sourcing_available`) → 5 | 5 |
-| Léger (< 1 kg), non fragile, sans taille ni couleur multiples → 3 | 3 |
+| Boutiques indépendantes vendant le produit (ou un équivalent fonctionnel) : 10+ → 6 · 5–9 → 5 · 3–4 → 3 · 2 → 1 · 1 → 0 | 6 |
+| Boutiques à momentum positif (ACCELERATING ou GROWING) : 4+ → 8 · 3 → 6 · 2 → 4 · 1 → 1 | 8 |
+| Taux d'arrêt (arrêtées ÷ total) : < 25 % → 6 · 25–50 % → 3 · > 50 % → 0 | 6 |
+
+## 4. Validation Big Four : 15 points
+
+| Critère | Points |
+|---|---|
+| Marchés (USA, UK, Canada, Australie) avec plusieurs signaux positifs : 4 → 10 · 3 → 8 · 2 → 5 · 1 → 2 | 10 |
+| Au moins un marché avec 3+ vendeurs performants → 3 | 3 |
+| Prix cohérents entre marchés (écart < 30 %) → 2 | 2 |
+
+## 5. Opportunité France : 15 points
+
+| Critère | Points |
+|---|---|
+| Concurrents DTC français actifs : 1–5 → 7 · 6–10 → 4 · 0 → 3 · 11+ → 1 | 7 |
+| Preuves commerciales en France (au moins un vendeur FR avec pubs actives depuis 30+ j ou dépense UE réelle) → 5 · indices faibles → 2 · aucune → 0 | 5 |
+| Concurrents FR en dessous du Big Four (moins de pubs, angles moins travaillés, prix plus hauts) → 3 | 3 |
+
+« 0 concurrent » ne rapporte que 3 points sur 7 : l'absence n'est pas une preuve.
+
+## 6. Marge / logistique : 5 points
+
+| Critère | Points |
+|---|---|
+| Ratio prix de vente FR / coût rendu (produit + livraison) ≥ 3 → 3 · 2,5–3 → 2 · 2–2,5 → 1 · < 2 → 0 | 3 |
+| Léger (< 1 kg), non fragile, fournisseur avec livraison ≤ 10 j vers la France → 2 | 2 |
+
+## Données UNKNOWN : jamais pénalisées automatiquement
+
+Un critère dont la donnée est UNKNOWN **n'est ni noté 0 ni noté au maximum** : il est retiré du
+calcul.
+
+```
+Score = (points obtenus ÷ points évaluables) × 100
+Couverture = points évaluables ÷ 100
+```
+
+- Affiche toujours le score **et** la couverture : « 82/100 (couverture 75 %) ».
+- Couverture < 60 % : le score est indicatif ; liste les données à obtenir avant de décider.
+- Une donnée ESTIMATED ou INFERRED est notée normalement, mais son étiquette reste visible.
 
 ## Verdict
 
-- **≥ 70** : 🟢 lancer un test.
-- **50–69** : 🟡 à tester si la niche plaît, sinon à surveiller.
-- **< 50** : 🔴 éviter.
+| Score | Verdict |
+|---|---|
+| 90–100 | **EXCEPTIONNEL** |
+| 80–89 | **FORT POTENTIEL** |
+| 70–79 | **À SURVEILLER** |
+| < 70 | **NON PRIORITAIRE** |
 
-Un produit éliminé à l'étape 2 (filtres éliminatoires) est 🔴 quel que soit son score.
+Garde-fous :
+- Un produit éliminé à l'étape 2 (filtres éliminatoires) est NON PRIORITAIRE quel que soit son score.
+- Un produit vendu par **une seule boutique** ne peut pas dépasser À SURVEILLER.
+- Aucun verdict au-dessus de À SURVEILLER sans **au moins 4 signaux positifs indépendants**
+  (par exemple : longévité, plusieurs vendeurs, momentum, plusieurs marchés du Big Four).

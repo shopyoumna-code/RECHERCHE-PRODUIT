@@ -1,123 +1,200 @@
 ---
 name: recherche-produit
-description: Trouver et valider des produits e-commerce à fort potentiel (dropshipping, marque DTC, boutique Shopify) avec des preuves de marché chiffrées. À utiliser quand l'utilisateur demande des idées de produits, des produits gagnants, une niche à lancer, ou veut valider un produit précis avant d'ouvrir une boutique.
+description: Trouver et valider des produits evergreen à haut potentiel pour lancer une marque en France, à partir de preuves commerciales observées dans le Big Four (USA, UK, Canada, Australie). À utiliser quand l'utilisateur demande des idées de produits, des produits gagnants, une niche à lancer, ou veut valider un produit précis avant d'ouvrir une boutique.
 ---
 
-# Recherche et validation de produits
+# Recherche et validation de produits evergreen
 
-Objectif : sortir une **shortlist de 5 à 10 produits**, chacun noté sur 100 avec des preuves
-de marché vérifiables, puis une fiche de lancement pour le meilleur.
+**Objectif** : identifier des produits evergreen à haut potentiel pour créer une **marque long
+terme en France**.
+
+- **Marchés sources** : USA, UK, Canada, Australie (le « Big Four »).
+- **Marché cible** : France.
+- **Principe** : la data tranche. Aucun produit n'est validé sur une intuition.
+
+On ne cherche pas « un produit qui a l'air gagnant ». On cherche des **anomalies positives
+dans les données**, et le meilleur candidat est celui qui **cumule le plus de signaux
+indépendants**. **Aucun signal isolé ne suffit.**
+
+Références :
+- [signaux.md](signaux.md) : comment lire chaque signal, seuils, calcul du momentum, et quel
+  outil fournit quelle donnée.
+- [grille-scoring.md](grille-scoring.md) : le Product Score /100.
 
 ## Sources de données
 
 | Source | Usage |
 |---|---|
-| **BrandSearch** (`mcp__BRANDSEARCH__*`) | Source principale : produits, pubs Meta/TikTok, boutiques concurrentes, revenus estimés |
-| **Shopify** (`mcp__Shopify__*`) | Noms de marque, domaines, aperçus de boutique, création de produits une fois validés |
-| **WebSearch / WebFetch** | Prix fournisseur (AliExpress, CJ, Alibaba), tendances de recherche, réglementation |
+| **BrandSearch** (`mcp__BRANDSEARCH__*`) | Source principale : produits, marchés de vendeurs, pubs Meta/TikTok, boutiques, trafic, revenus estimés |
+| **TrendTrack** (`mcp__TRENDTRACK__*`) | Si connecté : historique trafic et pubs des boutiques (comble les trous de BrandSearch sur les évolutions) |
+| **Shopify** (`mcp__Shopify__*`) | Noms de marque, domaines, aperçus de boutique, une fois un produit validé |
+| **WebSearch / WebFetch** | Prix fournisseur, ancienneté d'un domaine, Bibliothèque publicitaire Meta, concurrents FR hors BrandSearch |
 
 **N'utilise jamais One Radar** (`mcp__ONE_RADAR__*`), même s'il est connecté.
 
-BrandSearch facture des crédits (1 crédit par produit ou pub renvoyé). Garde `page_size`
-et `limit` bas (10 par défaut), et vérifie le solde avec `get_usage` en début de session
-si la recherche est large.
+BrandSearch facture des crédits (1 par produit, vendeur ou pub renvoyé). Garde `page_size` bas
+(10 par défaut), vérifie le solde avec `get_usage` en début de session, et ne lance l'analyse
+profonde (étapes 3 à 6) que sur 10 à 15 candidats.
 
-## Paramètres par défaut
+## Confiance data (obligatoire)
 
-Si l'utilisateur ne précise rien :
-- **Marchés** : France (+ francophonie) et États-Unis.
-- **Prix de vente** : 20 à 90 USD (zone où l'achat impulsif sur pub fonctionne).
-- **Type** : produit physique, léger, non fragile, livrable en moins de 10 jours.
+Chaque chiffre du rapport porte une étiquette :
 
-## Méthode en 4 étapes
+| Étiquette | Sens | Exemples |
+|---|---|---|
+| **OBSERVED** | Donnée directement disponible | pubs actives, date de début d'une pub, prix, nombre de vendeurs |
+| **ESTIMATED** | Estimation de l'outil | trafic mensuel, revenu, dépense publicitaire |
+| **INFERRED** | Déduite de plusieurs données | pubs actives à J-30, statut ACCELERATING, ancienneté de la boutique |
+| **UNKNOWN** | Indisponible | historique de trafic sans TrendTrack ni snapshot |
 
-### 1. Découvrir (large)
+- Ne transforme **jamais** une estimation en certitude : écris « ~28 k visites/mois (ESTIMATED) ».
+- Ne pénalise **jamais** automatiquement un UNKNOWN : voir la règle de calcul dans
+  [grille-scoring.md](grille-scoring.md).
 
-Lance plusieurs angles en parallèle, puis fusionne les doublons :
+## Méthode en 7 étapes
 
-- `search_products` trié par `ads_30d` (pubs lancées ces 30 derniers jours), avec
-  `price_min_usd`/`price_max_usd` et éventuellement `niche` ou `q`.
-- `search_products` avec `first_advertised_from` = il y a 90 jours et `sort=active_ads` :
-  produits **récents** qui scalent déjà.
-- `discover_meta_ads` et `discover_tiktok_ads` (filtrés par `niche` si donnée) : repérer
-  les produits derrière les pubs virales.
-- Pour la France : `market_country=FR` sur `search_products` (données EU), et
-  `languages=fr` sur les recherches de pubs.
+### 1. Découvrir dans le Big Four (large)
 
-Les valeurs de `niche` doivent venir de `get_facet("product-niches")`. Ne les invente pas.
+Lance plusieurs angles en parallèle, puis fusionne les doublons par `market.id` :
 
-**Astuces tirées des recherches précédentes :**
-- Pour une cible définie par un **problème** (par exemple « femmes 40+ »), la meilleure entrée est
-  `search_meta_ads` avec `q` = le problème dans la langue du marché (« jambes lourdes », « poches
-  sous les yeux », « après 40 ans »), `languages=fr`, `status=active`, `sort_by=reach` et
-  `max_ads_per_brand=1`. On voit ainsi directement les marques qui dépensent sur ce problème.
-- Avec `search_products`, ne combine pas `q` et `sort=active_ads` : le tri écrase la pertinence
-  et ramène des produits hors sujet. Garde le tri par défaut (pertinence) quand tu passes `q`.
-- `get_brand_ads_aggregates` donne en un appel la dépense publicitaire UE totale, la portée et
-  la langue des pubs : c'est la preuve la plus solide pour une marque sans revenu estimé.
-- `get_brand_summary` renvoie des réponses très longues : préfère `get_products` et
-  `get_brand_ads_aggregates`.
-- `get_product` donne l'audience (pays, part de femmes, âge) : vérifie toujours qu'elle
-  correspond à la cible avant de retenir un produit.
+- `search_products` trié par `ads_30d` puis par `active_ads`, avec `first_advertised_to` = il y a
+  6 mois (produits déjà installés dans le temps).
+- `search_products` avec `first_advertised_from` = il y a 6 mois et `sort=ads_30d` : produits
+  plus récents à **momentum exceptionnel** (gardés seulement s'ils sont multi-boutiques).
+- `search_products` avec `sellers_min=3` : produits déjà vendus par plusieurs boutiques.
+- `search_meta_ads` avec `country_code` = `US`, `GB`, `CA` ou `AU`, `status=active`,
+  `sort_by=duration`, `duplicate_count_min=3`, `max_ads_per_brand=1` : pubs anciennes **et**
+  dupliquées, donc rentables.
+- `discover_brands` / `query_brands` avec `country_code` du Big Four et `status=active` pour
+  repérer des boutiques en croissance.
+
+Les valeurs de `niche` viennent de `get_facet("product-niches")`. Ne les invente pas.
+
+Astuces :
+- Ne combine pas `q` et `sort=active_ads` dans `search_products` : le tri écrase la pertinence.
+- `get_brand_summary` est très verbeux : préfère `get_brand` + `get_brand_ads_aggregates`.
 
 ### 2. Filtrer (éliminatoire)
 
 Écarte immédiatement tout produit qui :
-- est une marque déposée ou un produit de marque (Nike, Dyson, Stanley…) : risque de contrefaçon ;
-- fait des allégations médicales, ou est un complément alimentaire, un cosmétique actif,
-  une arme, un produit pour enfants de moins de 3 ans : réglementation lourde ;
-- contient une batterie lithium non amovible, un liquide ou un aérosol, ou est très
-  volumineux ou fragile : logistique ;
-- a plus de 50 vendeurs (`sellers`) : marché saturé ;
-- n'a aucune pub active : pas de preuve de demande.
+- est une marque déposée ou une copie de produit de marque (contrefaçon) ;
+- relève d'une réglementation lourde en France (allégations médicales, compléments alimentaires,
+  cosmétiques actifs, armes, produits pour enfants de moins de 3 ans) ;
+- pose un problème logistique majeur (batterie lithium non amovible, liquide, aérosol, très
+  volumineux ou fragile) ;
+- n'est plus vendu nulle part ;
+- est une **mode passagère** évidente (saisonnier, gadget lié à un buzz, licence).
 
-### 3. Valider (en profondeur, sur 10 à 15 candidats maximum)
+### 3. Signaux boutique (pour chaque vendeur sérieux)
 
-Pour chaque candidat :
-1. `get_product` → audience, top 5 boutiques, `sourcing_available`, présence TikTok Shop.
-2. `get_market` → toutes les boutiques qui le vendent, leurs prix.
-3. `get_brand_summary` sur les 2 ou 3 meilleurs vendeurs → revenu estimé, nombre de pubs actives.
-4. `search_meta_ads` avec `brand_ids` = ces vendeurs et `sort_by=duration` → la pub la plus
-   ancienne encore active (une pub active depuis plus de 30 jours est rentable).
-5. WebSearch → prix fournisseur (AliExpress / CJ Dropshipping), délai de livraison.
+Pour chaque boutique trouvée, collecte sur **7 j, 30 j et 90 j** (voir [signaux.md](signaux.md)) :
+pubs actives et leur évolution, nouvelles pubs, duplications, trafic et son évolution, revenu
+estimé et son évolution, ancienneté de la boutique, du produit et des pubs.
 
-### 4. Noter sur 100
+**Enregistre chaque mesure** dans `suivi/snapshots.csv` (voir plus bas) : c'est ce qui permet
+de calculer de vraies évolutions lors des recherches suivantes.
 
-Applique la grille de [grille-scoring.md](grille-scoring.md). **Chaque point doit être
-justifié par un chiffre issu d'un outil.** Si une donnée manque, attribue 0 à ce critère et
-écris « donnée manquante » : n'estime jamais un chiffre sans le dire.
+Signal de scaling fort = **pubs actives ↑ + trafic ↑ + nouvelles créatives ↑ + duplications ↑
++ produit toujours vendu**. Le nombre de pubs seul n'est jamais une preuve de scaling.
+
+### 4. Momentum
+
+Calcule `AD GROWTH` et `TRAFFIC GROWTH` sur 7 j, 30 j et 90 j, puis classe chaque boutique
+**ACCELERATING > GROWING > STABLE > DECLINING** selon les règles de [signaux.md](signaux.md).
+
+### 5. Validation produit (multi-boutiques)
+
+Dès qu'un produit est intéressant :
+1. `get_product` → top vendeurs, audience, `sourcing_available`.
+2. `get_market` avec `history=true` → **tous** les vendeurs du produit, leurs pubs, leurs prix,
+   et la série quotidienne du marché (`advertisers`, `est_daily_spend_usd`).
+3. Cherche aussi les produits **fonctionnellement identiques** sous d'autres noms
+   (`search_products` avec `q` = la fonction, pas le titre).
+
+Mesure : boutiques indépendantes, pays, boutiques qui scalent / stables / en déclin / ayant
+arrêté leurs pubs.
+
+- **Signal fort** : plusieurs boutiques indépendantes **et** plusieurs à momentum positif.
+- **Signal très fort** : même produit performant dans plusieurs marchés du Big Four.
+- **Signal négatif** : beaucoup de boutiques ont testé puis arrêté leurs pubs.
+
+Le succès d'une seule boutique n'est **jamais** une validation suffisante.
+
+### 6. Longévité et validation Big Four
+
+- Longévité : date de première pub du produit (`first_advertised`), plus ancienne pub encore
+  active, survie des vendeurs. Barème dans [signaux.md](signaux.md). Évite tout produit dont la
+  performance repose sur un pic court.
+- Big Four : pour chaque finaliste, remplis le tableau USA / UK / Canada / Australie (présence,
+  vendeurs, boutiques en croissance, pubs actives, croissance pubs, trafic, croissance trafic,
+  ancienneté, prix). Le pays d'une boutique = `country_code` de la marque ; ses marchés de vente
+  = `markets` (noms complets : « United States », « United Kingdom », « Canada », « Australia »).
+
+### 7. France
+
+Une fois le produit validé dans le Big Four, cherche-le en France et mesure **exactement les
+mêmes signaux** : concurrents DTC (`country_code=FR`, `market_country=FR`, `languages=fr`),
+pubs actives, croissance des pubs, trafic, croissance du trafic, ancienneté, longévité, prix.
+
+**Opportunité idéale** : Big Four = forte validation, France = faible concurrence, France =
+quelques preuves commerciales existantes, produit evergreen.
+
+« Aucun concurrent français » n'est **jamais** une preuve positive : cela peut signifier que le
+produit ne prend pas en France. Cherche alors pourquoi (prix, culture, réglementation).
+
+### 8. Noter sur 100
+
+Applique [grille-scoring.md](grille-scoring.md). Chaque point est justifié par un chiffre
+étiqueté (OBSERVED / ESTIMATED / INFERRED).
+
+## Suivi dans le temps : `suivi/snapshots.csv`
+
+BrandSearch donne surtout des valeurs **actuelles**. Pour obtenir de vraies évolutions 7/30/90 j,
+ajoute une ligne par boutique analysée à chaque recherche (ne réécris jamais les lignes
+existantes) :
+
+```
+date,brand_id,pays,produit_market_id,pubs_actives,pubs_total,visites_mensuelles,revenu_min_usd,revenu_max_usd,source
+```
+
+Avant de calculer un momentum, relis ce fichier : une valeur J-30 issue d'un snapshot est
+**OBSERVED**, une valeur reconstituée est **INFERRED**.
 
 ## Livrable
 
-### Règle obligatoire : des liens cliquables partout
+### Liens cliquables partout (obligatoire)
 
-L'utilisateur ne doit **jamais** avoir à chercher lui-même une boutique ou une pub. Chaque fois
-qu'une boutique, un produit ou une pub est cité (dans le rapport **et** dans le résumé de chat) :
-- **Boutique** : lien vers le site, `[nom](https://domaine.com)`.
-- **Produit** : lien direct vers la fiche produit (champ `url` renvoyé par BrandSearch), pas
-  seulement vers la page d'accueil.
-- **Pub Meta** : lien vers la Bibliothèque publicitaire Meta, accessible sans compte :
-  `https://www.facebook.com/ads/library/?id=<id de la pub>`.
-- **Fournisseur** : lien vers l'annonce (AliExpress, CJ, 1688…).
-- Le lien BrandSearch (`dashboard_url`) peut être ajouté en complément, jamais à la place : il
-  demande un compte.
+Chaque boutique, produit ou pub cité (dans le rapport **et** le résumé de chat) a son lien :
+- **Boutique** : `[nom](https://domaine.com)`.
+- **Produit** : lien direct vers la fiche (champ `url` de BrandSearch).
+- **Pub Meta** : `https://www.facebook.com/ads/library/?id=<id de la pub>`.
+- **Fournisseur** : lien vers l'annonce.
+- Le `dashboard_url` BrandSearch peut s'ajouter en complément, jamais à la place.
 
-Si tu n'as pas l'URL exacte d'une fiche produit, mets le lien de la boutique et écris
-« fiche produit à retrouver » : n'invente jamais une URL.
+Sans URL exacte de fiche produit : lien de la boutique + « fiche produit à retrouver ».
+N'invente jamais une URL.
 
 ### Contenu du rapport
 
-Écris le rapport dans `rapports/AAAA-MM-JJ-<sujet>.md` avec :
+`rapports/AAAA-MM-JJ-<sujet>.md` :
 
-1. **Résumé** : les 3 meilleurs produits en une ligne chacun.
-2. **Tableau** : produit, score /100, prix de vente, coût estimé, marge, vendeurs, pubs actives, verdict (🟢 lancer / 🟡 tester / 🔴 éviter).
-3. **Fiche détaillée** par produit retenu : preuves (avec liens vers les pubs et boutiques),
-   score par critère, angle marketing suggéré (inspiré des pubs qui marchent, sans les copier),
-   risques.
-4. **Plan de test** pour le n°1 : budget pub de test (par ex. 30 à 50 €/jour pendant 5 jours),
-   KPI d'arrêt (CPA cible = marge brute ÷ 1,5), 3 angles de pub à tester.
-5. **Produits écartés** et pourquoi, en une ligne chacun.
+1. **Résumé** : les 3 meilleurs candidats, chacun avec son score, son verdict et ses signaux
+   indépendants en une ligne.
+2. **Tableau des finalistes** : produit, score /100, couverture data (%), verdict, momentum
+   dominant, nb de boutiques (scalent / stables / déclin / arrêt), marchés Big Four validés,
+   ancienneté, concurrents FR.
+3. **Fiche par finaliste** :
+   - signaux boutique (tableau 7 j / 30 j / 90 j par vendeur, avec étiquettes de confiance) ;
+   - momentum et classement ;
+   - validation multi-boutiques ;
+   - tableau Big Four ;
+   - tableau France ;
+   - score détaillé par bloc ;
+   - **signaux indépendants cumulés** (liste) et **signaux contraires** (liste) ;
+   - données UNKNOWN et comment les obtenir.
+4. **Plan de test France** pour le n°1 : budget de test, KPI d'arrêt (CPA cible = marge brute
+   ÷ 1,5), 3 angles de pub inspirés de ce qui dure dans le Big Four, sans copier.
+5. **Produits écartés** et la raison, en une ligne chacun.
 
-Termine en proposant les suites possibles : `generate-business-names` et
-`generate-domain-names` (Shopify) pour la marque, puis `get-new-store-previews` pour un
-aperçu de boutique. Ne crée rien sur Shopify sans l'accord explicite de l'utilisateur.
+Termine en proposant les suites : `generate-business-names` et `generate-domain-names`
+(Shopify), puis `get-new-store-previews`. Ne crée rien sur Shopify sans accord explicite.
