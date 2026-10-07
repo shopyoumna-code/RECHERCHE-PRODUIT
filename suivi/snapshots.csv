@@ -37,3 +37,9 @@ date,brand_id,pays,produit_market_id,pubs_actives,pubs_total,visites_mensuelles,
 2026-10-07,sleepybelly.com.au,AU,sleepybelly.com.au_7017886875805,253,545,27107,-23.39,18.37,26.64,278.95,88440.66,160553.82,BrandSearch get_brands_by_ids
 2026-10-07,nestishop.com,GB,nestishop.com_15091614777668,1578,3384,62489,-30.37,0.19,38.37,75501.36,302005.44,402673.92,BrandSearch get_brands_by_ids
 2026-10-07,tymobeauty.com,US,tymobeauty.com_7875078127731,1155,50001,748874,-3.25,-15.06,-22.08,0,1885960,3423742.78,BrandSearch get_brands_by_ids
+2026-10-07,lelamier.com,US,,549,,300867,-51.73,,31.11,114262.53,,,BrandSearch search_brands
+2026-10-07,shesbirdie.com,US,,3149,,104102,28.25,,272.25,192.71,,,BrandSearch search_brands
+2026-10-07,lyphea.com,FR,,721,,161900,-24.12,,13.42,55568.6,,,BrandSearch search_brands
+2026-10-07,cocoseat.com,US,,275,,73310,7.87,,23.87,11551.62,,,BrandSearch search_brands
+2026-10-07,klikcamera.com,US,,1855,,189350,2.31,,111.63,50240.01,,,BrandSearch search_brands
+2026-10-07,unbedapp.com,CA,,215,,109935,20.73,,18.13,220.04,,,BrandSearch search_brands
