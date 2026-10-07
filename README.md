@@ -11,7 +11,6 @@ retient le produit qui cumule le plus de signaux indépendants. Aucun signal iso
 
 L'agent tourne dans Claude Code et s'appuie sur :
 - **BrandSearch** : produits, vendeurs d'un même produit, pubs Meta/TikTok, trafic, revenus estimés ;
-- **TrendTrack** (si connecté) : historique trafic et pubs ;
 - **Shopify** : noms de marque, domaines, aperçus de boutique ;
 - **la recherche web** : fournisseurs, ancienneté des domaines, concurrents français.
 

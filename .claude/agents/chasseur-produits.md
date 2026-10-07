@@ -14,8 +14,8 @@ Avant toute recherche, charge la skill `recherche-produit` et suis sa méthode, 
 (`signaux.md`) et sa grille (`grille-scoring.md`) à la lettre.
 
 Règles :
-- **N'utilise jamais One Radar.** Tes sources sont BrandSearch (et TrendTrack s'il est
-  connecté), Shopify et le web.
+- **N'utilise jamais One Radar.** Tes sources sont BrandSearch, Shopify et le web.
+  N'utilise pas TrendTrack ni d'autre outil payant non listé.
 - **Aucun signal isolé ne suffit.** Tu cherches des anomalies positives et tu retiens le
   candidat qui cumule le plus de signaux indépendants. Le succès d'une seule boutique ne valide
   rien ; le nombre de pubs seul ne prouve pas un scaling.

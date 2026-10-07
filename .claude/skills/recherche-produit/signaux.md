@@ -14,9 +14,9 @@ compte que s'il est confirmé par d'autres signaux indépendants.
 | Nouvelles pubs sur 7 / 30 / 90 j | `get_brand_ads_aggregates` avec `from_date`/`to_date` → `window.ad_count` ; compare avec la période précédente de même durée | OBSERVED |
 | Duplications | `search_meta_ads` `brand_ids=<domaine>` `sort_by=duration` → `duplicate_count` des pubs ; `duplicate_count_min` pour filtrer | OBSERVED |
 | Trafic actuel | `get_brand` → `monthly_visits` | ESTIMATED |
-| Évolution du trafic | `suivi/snapshots.csv` ou TrendTrack ; sinon UNKNOWN | ESTIMATED / UNKNOWN |
+| Évolution du trafic | `suivi/snapshots.csv` (BrandSearch ne donne que la valeur actuelle) ; sinon UNKNOWN | ESTIMATED / UNKNOWN |
 | Revenu estimé | `revenue` des cartes produit, `min_revenue`/`max_revenue` des marques | ESTIMATED |
-| Évolution du revenu | `suivi/snapshots.csv` ou TrendTrack ; sinon UNKNOWN | ESTIMATED / UNKNOWN |
+| Évolution du revenu | `suivi/snapshots.csv` (BrandSearch ne donne que la valeur actuelle) ; sinon UNKNOWN | ESTIMATED / UNKNOWN |
 | Dépense pub du marché produit (série quotidienne) | `get_market` `history=true` → `advertisers`, `est_daily_spend_usd` (données UE/UK) | ESTIMATED |
 | Ancienneté boutique | `get_brand` → `created_at` (= entrée dans le catalogue, pas création réelle) ; WHOIS / date de la page Meta via WebSearch | INFERRED |
 | Ancienneté produit | `first_advertised` de la carte produit | OBSERVED |

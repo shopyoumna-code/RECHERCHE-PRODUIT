@@ -26,11 +26,10 @@ Références :
 | Source | Usage |
 |---|---|
 | **BrandSearch** (`mcp__BRANDSEARCH__*`) | Source principale : produits, marchés de vendeurs, pubs Meta/TikTok, boutiques, trafic, revenus estimés |
-| **TrendTrack** (`mcp__TRENDTRACK__*`) | Si connecté : historique trafic et pubs des boutiques (comble les trous de BrandSearch sur les évolutions) |
 | **Shopify** (`mcp__Shopify__*`) | Noms de marque, domaines, aperçus de boutique, une fois un produit validé |
 | **WebSearch / WebFetch** | Prix fournisseur, ancienneté d'un domaine, Bibliothèque publicitaire Meta, concurrents FR hors BrandSearch |
 
-**N'utilise jamais One Radar** (`mcp__ONE_RADAR__*`), même s'il est connecté.
+**N'utilise jamais One Radar** (`mcp__ONE_RADAR__*`) ni TrendTrack (`mcp__TRENDTRACK__*`), même s'ils sont connectés.
 
 BrandSearch facture des crédits (1 par produit, vendeur ou pub renvoyé). Garde `page_size` bas
 (10 par défaut), vérifie le solde avec `get_usage` en début de session, et ne lance l'analyse
@@ -45,7 +44,7 @@ Chaque chiffre du rapport porte une étiquette :
 | **OBSERVED** | Donnée directement disponible | pubs actives, date de début d'une pub, prix, nombre de vendeurs |
 | **ESTIMATED** | Estimation de l'outil | trafic mensuel, revenu, dépense publicitaire |
 | **INFERRED** | Déduite de plusieurs données | pubs actives à J-30, statut ACCELERATING, ancienneté de la boutique |
-| **UNKNOWN** | Indisponible | historique de trafic sans TrendTrack ni snapshot |
+| **UNKNOWN** | Indisponible | évolution du trafic sans snapshot antérieur |
 
 - Ne transforme **jamais** une estimation en certitude : écris « ~28 k visites/mois (ESTIMATED) ».
 - Ne pénalise **jamais** automatiquement un UNKNOWN : voir la règle de calcul dans
