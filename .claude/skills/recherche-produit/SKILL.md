@@ -46,6 +46,20 @@ Lance plusieurs angles en parallèle, puis fusionne les doublons :
 
 Les valeurs de `niche` doivent venir de `get_facet("product-niches")`. Ne les invente pas.
 
+**Astuces tirées des recherches précédentes :**
+- Pour une cible définie par un **problème** (par exemple « femmes 40+ »), la meilleure entrée est
+  `search_meta_ads` avec `q` = le problème dans la langue du marché (« jambes lourdes », « poches
+  sous les yeux », « après 40 ans »), `languages=fr`, `status=active`, `sort_by=reach` et
+  `max_ads_per_brand=1`. On voit ainsi directement les marques qui dépensent sur ce problème.
+- Avec `search_products`, ne combine pas `q` et `sort=active_ads` : le tri écrase la pertinence
+  et ramène des produits hors sujet. Garde le tri par défaut (pertinence) quand tu passes `q`.
+- `get_brand_ads_aggregates` donne en un appel la dépense publicitaire UE totale, la portée et
+  la langue des pubs : c'est la preuve la plus solide pour une marque sans revenu estimé.
+- `get_brand_summary` renvoie des réponses très longues : préfère `get_products` et
+  `get_brand_ads_aggregates`.
+- `get_product` donne l'audience (pays, part de femmes, âge) : vérifie toujours qu'elle
+  correspond à la cible avant de retenir un produit.
+
 ### 2. Filtrer (éliminatoire)
 
 Écarte immédiatement tout produit qui :
